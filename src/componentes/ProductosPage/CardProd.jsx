@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 
 export default function CardProd({ producto }) {
   const [talleSeleccionado, setTalleSeleccionado] = useState(
@@ -7,6 +8,21 @@ export default function CardProd({ producto }) {
   const [colorSeleccionado, setColorSeleccionado] = useState(
     producto.colores[0] || "",
   );
+
+  const { addToCart } = useContext(CartContext);
+
+  const handleAgregar = () => {
+    if (talleSeleccionado && colorSeleccionado) {
+      addToCart(producto, talleSeleccionado, colorSeleccionado);
+
+      // Opcional: Feedback visual rápido (puedes cambiar esto por un Toast o Modal más adelante)
+      alert(
+        `¡Agregado al carrito!\n${producto.nombre}\nTalle: ${talleSeleccionado} | Color: ${colorSeleccionado}`,
+      );
+    } else {
+      alert("Por favor, selecciona un talle y un color.");
+    }
+  };
 
   return (
     <div className="group w-full max-w-[380px] p-4 rounded-[2rem] font-sans mx-auto relative overflow-hidden z-0 border border-white/20 bg-white/10 shadow-lg backdrop-filter backdrop-blur-md">
@@ -79,7 +95,10 @@ export default function CardProd({ producto }) {
         </div>
 
         <div className="flex justify-center pb-2">
-          <button className="font-octosquares cursor-pointer text-[#CAFC00] font-black text-base py-3 px-8 rounded-full transition-colors w-[85%] shadow-lg border border-white/20 bg-white/10 shadow-lg backdrop-filter backdrop-blur-md hover:bg-[#CAFC00]/20 hover:text-[#CAFC00]">
+          <button
+            onClick={handleAgregar}
+            className="font-octosquares cursor-pointer text-[#CAFC00] font-black text-base py-3 px-8 rounded-full transition-colors w-[85%] shadow-lg border border-white/20 bg-white/10 backdrop-filter backdrop-blur-md hover:bg-[#CAFC00]/20 hover:text-[#CAFC00]"
+          >
             Agregar
           </button>
         </div>
