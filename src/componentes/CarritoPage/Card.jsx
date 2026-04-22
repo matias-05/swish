@@ -61,7 +61,6 @@ const Card = ({ product, onQuantityChange, onRemoveProduct }) => {
           </div>
 
           <button
-            // Pasamos id, size y color para eliminar el producto exacto
             onClick={() => onRemoveProduct(id, selectedSize, selectedColor)}
             className="h-10 cursor-pointer w-10 flex items-center justify-center border border-white/20 bg-white/50 backdrop-filter backdrop-blur-md shadow-lg rounded-2xl hover:opacity-80 transition-opacity"
           >

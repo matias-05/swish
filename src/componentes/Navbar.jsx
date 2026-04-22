@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom"; // Asegúrate de importar Link
+import { useState, useEffect, useContext } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import { CartContext } from "../context/CartContext";
 
 const CartIcon = ({ isCartActive }) => (
   <svg
@@ -8,7 +10,11 @@ const CartIcon = ({ isCartActive }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={`w-7 h-7 transition-colors cursor-pointer ${isCartActive ? "text-[#CAFC00] drop-shadow-[0_0_12px_#CAFC00]" : "text-white hover:text-[#CAFC00]"}`}
+    className={`w-7 h-7 transition-colors cursor-pointer ${
+      isCartActive
+        ? "text-[#CAFC00] drop-shadow-[0_0_12px_#CAFC00]"
+        : "text-white hover:text-[#CAFC00]"
+    }`}
   >
     <path
       strokeLinecap="round"
@@ -19,91 +25,227 @@ const CartIcon = ({ isCartActive }) => (
 );
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const [activeSection, setActiveSection] = useState("inicio");
+  const [activeHash, setActiveHash] = useState("#inicio");
+
+  const { cartItems } = useContext(CartContext);
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
 
   const navLinks = [
-    { name: "Inicio", to: "/", id: "inicio" }, // Va a la raíz pura
+    { name: "Inicio", to: "/#inicio", id: "inicio" },
     { name: "Productos", to: "/#productos", id: "productos" },
     { name: "Sobre Nosotros", to: "/#sobre-nosotros", id: "sobre-nosotros" },
     { name: "Contacto", to: "/#contacto", id: "contacto" },
   ];
 
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const scrollWithOffset = (el) => {
+    // Obtenemos la posición exacta del elemento
+    const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
+    const yOffset = -120;
+    window.scrollTo({ top: yCoordinate + yOffset, behavior: "smooth" });
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (location.pathname !== "/") return;
+    if (location.pathname !== "/") {
+      setActiveHash("");
+      return;
+    }
 
-      const scrollPosition = window.scrollY;
-      let currentSection = "inicio";
+    let observer;
+    let retryCount = 0;
+    const maxRetries = 50;
 
-      navLinks.forEach((link) => {
-        const sectionElement = document.getElementById(link.id);
-        if (sectionElement) {
-          const sectionTop = sectionElement.offsetTop - 150;
-          if (scrollPosition >= sectionTop) {
-            currentSection = link.id;
-          }
+    const connectObserver = () => {
+      const sections = navLinks.map((link) => document.getElementById(link.id));
+      const foundAny = sections.some((el) => el !== null);
+
+      if (!foundAny) {
+        if (retryCount < maxRetries) {
+          retryCount++;
+          setTimeout(connectObserver, 100);
         }
-      });
+        return;
+      }
 
-      setActiveSection(currentSection);
+      const observerOptions = {
+        root: null,
+        rootMargin: "-120px 0px -40% 0px",
+        threshold: 0,
+      };
+
+      const observerCallback = (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveHash(`#${entry.target.id}`);
+          }
+        });
+      };
+
+      observer = new IntersectionObserver(observerCallback, observerOptions);
+
+      sections.forEach((el) => {
+        if (el) observer.observe(el);
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    connectObserver();
+
+    return () => {
+      if (observer) observer.disconnect();
+    };
   }, [location.pathname]);
+
+  const checkIsActive = (link) => {
+    const { pathname } = location;
+    if (pathname === "/") return activeHash === `#${link.id}`;
+    return false;
+  };
 
   const isCarritoPage = location.pathname === "/carrito";
 
   return (
-    <nav className="fixed w-full top-0 left-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/5">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-24">
+    <nav className="fixed w-full top-0 left-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/5 h-24 flex items-center">
+      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="flex justify-between items-center w-full">
           <div className="flex-1 flex items-center justify-start">
-            <Link
-              to="/"
+            <HashLink
+              smooth
+              to="/#inicio"
+              scroll={scrollWithOffset}
               className="flex items-center gap-3 cursor-pointer group"
             >
               <img
                 src="/imagenes/otros/logo.jpeg"
-                className="w-15"
+                className="w-15 h-15 object-contain"
                 alt="Swish Logo"
               />
               <span className="font-strasua text-3xl text-white tracking-widest group-hover:text-[#CAFC00] transition-colors">
                 SWISH
               </span>
-            </Link>
+            </HashLink>
           </div>
 
           <div className="hidden md:flex flex-1 justify-center space-x-10">
             {navLinks.map((link) => {
-              const isActive = !isCarritoPage && activeSection === link.id;
+              const isActive = !isCarritoPage && checkIsActive(link);
 
               return (
-                <Link
+                <HashLink
                   key={link.name}
+                  smooth
                   to={link.to}
-                  className={`text-sm font-octosquares tracking-wide transition-all duration-300 ${
+                  scroll={scrollWithOffset}
+                  className={`text-sm font-octosquares tracking-wide transition-all duration-300 relative py-1 group ${
                     isActive
-                      ? "font-octosquares font-bold text-[#CAFC00] drop-shadow-[0_0_12px_#CAFC00] "
-                      : "text-white hover:text-[#CAFC00] "
+                      ? "font-bold text-[#CAFC00] drop-shadow-[0_0_12px_#CAFC00]"
+                      : "text-white hover:text-[#CAFC00]"
                   }`}
                 >
                   {link.name}
-                </Link>
+                  <span
+                    className={`absolute bottom-0 left-0 h-[1px] bg-[#CAFC00] transition-transform duration-300 ease-out 
+                    ${
+                      isActive
+                        ? "w-full scale-x-100"
+                        : "w-full scale-x-0 origin-left group-hover:scale-x-100"
+                    }`}
+                  />
+                </HashLink>
               );
             })}
           </div>
 
           <div className="flex-1 flex items-center justify-end gap-6">
-            <div className="hidden md:block">
-              <Link to="/carrito" aria-label="Ir al carrito">
+            <div className="relative cursor-pointer hover:scale-110 transition-transform flex items-center">
+              <Link
+                to="/carrito"
+                aria-label="Ir al carrito"
+                className="relative"
+              >
                 <CartIcon isCartActive={isCarritoPage} />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-[#CAFC00] text-black text-xs font-black font-octosquares rounded-full h-5 w-5 flex items-center justify-center shadow-[0_0_10px_rgba(202,252,0,0.5)]">
+                    {totalItems}
+                  </span>
+                )}
               </Link>
             </div>
+
+            <button
+              onClick={toggleMenu}
+              className="md:hidden focus:outline-none text-white hover:text-[#CAFC00] transition-colors"
+              aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            >
+              {isOpen ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-8 h-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-8 h-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+      </div>
+
+      <div
+        className={`
+        absolute top-[96px] left-0 w-full bg-[#111111]/95 backdrop-blur-md text-white flex flex-col items-center gap-8 py-10 transition-all duration-300 ease-in-out md:hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-b border-white/10
+        ${
+          isOpen
+            ? "opacity-100 visible translate-y-0"
+            : "opacity-0 invisible -translate-y-5"
+        }
+      `}
+      >
+        {navLinks.map((link) => {
+          const isActive = !isCarritoPage && checkIsActive(link);
+
+          return (
+            <HashLink
+              key={link.name}
+              smooth
+              to={link.to}
+              scroll={scrollWithOffset}
+              onClick={() => setIsOpen(false)}
+              className={`relative text-xl font-octosquares tracking-[0.1em] group ${
+                isActive ? "text-[#CAFC00] font-bold" : "hover:text-[#CAFC00]"
+              }`}
+            >
+              {link.name}
+            </HashLink>
+          );
+        })}
       </div>
     </nav>
   );

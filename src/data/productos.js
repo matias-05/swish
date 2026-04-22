@@ -1,4 +1,4 @@
-const productos = [
+const productosLocal = [
   {
     id: 1,
     imagen: "/imagenes/productos/manga-pierna.png",
@@ -91,4 +91,4 @@ const productos = [
   },
 ];
 
-export default productos;
+export default productosLocal;

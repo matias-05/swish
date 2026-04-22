@@ -1,27 +1,51 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../context/CartContext";
+import toast from "react-hot-toast";
 
 export default function CardProd({ producto }) {
-  const [talleSeleccionado, setTalleSeleccionado] = useState(
-    producto.talles[0] || "",
-  );
+  const [talleSeleccionado, setTalleSeleccionado] = useState("");
   const [colorSeleccionado, setColorSeleccionado] = useState(
-    producto.colores[0] || "",
+    producto.colores ? producto.colores[0] : "",
   );
 
   const { addToCart } = useContext(CartContext);
 
-  const handleAgregar = () => {
-    if (talleSeleccionado && colorSeleccionado) {
-      addToCart(producto, talleSeleccionado, colorSeleccionado);
-
-      // Opcional: Feedback visual rápido (puedes cambiar esto por un Toast o Modal más adelante)
-      alert(
-        `¡Agregado al carrito!\n${producto.nombre}\nTalle: ${talleSeleccionado} | Color: ${colorSeleccionado}`,
-      );
-    } else {
-      alert("Por favor, selecciona un talle y un color.");
+  const obtenerStockDeTalle = (talle) => {
+    if (producto.stockPorTalle && producto.stockPorTalle[talle] !== undefined) {
+      return Number(producto.stockPorTalle[talle]);
     }
+    return Number(producto.stock || 0);
+  };
+
+  useEffect(() => {
+    if (producto.talles) {
+      const primerTalleDisponible = producto.talles.find(
+        (t) => obtenerStockDeTalle(t) > 0,
+      );
+
+      if (primerTalleDisponible) {
+        setTalleSeleccionado(primerTalleDisponible);
+      } else {
+        setTalleSeleccionado("");
+      }
+    }
+  }, [producto]);
+
+  const handleAgregar = () => {
+    if (!talleSeleccionado || !colorSeleccionado) {
+      toast.error("Selecciona un talle y color", {
+        className:
+          "border border-white/20 bg-white/10 shadow-lg backdrop-filter backdrop-blur-md",
+        style: {
+          borderRadius: "10px",
+          background: "transparent",
+          color: "#fff",
+        },
+      });
+      return;
+    }
+
+    addToCart(producto, talleSeleccionado, colorSeleccionado);
   };
 
   return (
@@ -40,7 +64,7 @@ export default function CardProd({ producto }) {
             {producto.nombre}
           </h3>
           <span className="text-[#CAFC00] font-octosquares text-xl font-black drop-shadow-md whitespace-nowrap">
-            ${producto.precio.toLocaleString()}{" "}
+            ${producto.precio?.toLocaleString()}{" "}
           </span>
         </div>
 
@@ -49,19 +73,32 @@ export default function CardProd({ producto }) {
             Talle:
           </span>
           <div className="flex flex-wrap gap-2">
-            {producto.talles.map((talle) => (
-              <button
-                key={talle}
-                onClick={() => setTalleSeleccionado(talle)}
-                className={`cursor-pointer w-10 h-10 flex font-strasua items-center justify-center rounded-full font-black text-sm transition-all duration-300 backdrop-blur-sm ${
-                  talleSeleccionado === talle
-                    ? "bg-[#CAFC00] text-black  shadow-[0_0_15px_rgba(202,252,0,0.3)]"
-                    : "bg-white/10 text-white  hover:bg-white/20 border border-white/5"
-                }`}
-              >
-                {talle}
-              </button>
-            ))}
+            {producto.talles &&
+              producto.talles.map((talle) => {
+                const stockDeEsteTalle = obtenerStockDeTalle(talle);
+                const sinStock = stockDeEsteTalle <= 0;
+
+                return (
+                  <button
+                    key={talle}
+                    disabled={sinStock}
+                    onClick={() => setTalleSeleccionado(talle)}
+                    className={`relative cursor-pointer w-10 h-10 flex font-strasua items-center justify-center rounded-full font-black text-sm transition-all duration-300 backdrop-blur-sm 
+                    ${
+                      sinStock
+                        ? "opacity-30 cursor-not-allowed border border-red-500/50 bg-black/50"
+                        : talleSeleccionado === talle
+                          ? "bg-[#CAFC00] text-black shadow-[0_0_15px_rgba(202,252,0,0.3)]"
+                          : "bg-white/10 text-white hover:bg-white/20 border border-white/5"
+                    }`}
+                  >
+                    {talle}
+                    {sinStock && (
+                      <div className="absolute w-full h-[1px] bg-red-500 rotate-45 transform origin-center"></div>
+                    )}
+                  </button>
+                );
+              })}
           </div>
         </div>
 
@@ -70,36 +107,43 @@ export default function CardProd({ producto }) {
             Color:
           </span>
           <div className="flex gap-3">
-            {producto.colores.map((colorStr) => {
-              let claseColor = "bg-gray-500";
-              if (colorStr.toLowerCase() === "negro")
-                claseColor = "bg-black border border-zinc-700";
-              if (colorStr.toLowerCase() === "blanco")
-                claseColor = "bg-white border border-gray-300";
+            {producto.colores &&
+              producto.colores.map((colorStr) => {
+                let claseColor = "bg-gray-500";
+                if (colorStr.toLowerCase() === "negro")
+                  claseColor = "bg-black border border-zinc-700";
+                if (colorStr.toLowerCase() === "blanco")
+                  claseColor = "bg-white border border-gray-300";
 
-              return (
-                <button
-                  key={colorStr}
-                  onClick={() => setColorSeleccionado(colorStr)}
-                  title={colorStr}
-                  className={` cursor-pointer w-8 h-8 rounded-full transition-all duration-300 ${claseColor} ${
-                    colorSeleccionado === colorStr
-                      ? "ring-2 ring-offset-2 ring-offset-neutral-900 ring-white scale-110"
-                      : "hover:scale-105"
-                  }`}
-                  aria-label={`Color ${colorStr}`}
-                />
-              );
-            })}
+                return (
+                  <button
+                    key={colorStr}
+                    onClick={() => setColorSeleccionado(colorStr)}
+                    title={colorStr}
+                    className={` cursor-pointer w-8 h-8 rounded-full transition-all duration-300 ${claseColor} ${
+                      colorSeleccionado === colorStr
+                        ? "ring-2 ring-offset-2 ring-offset-neutral-900 ring-white scale-110"
+                        : "hover:scale-105"
+                    }`}
+                    aria-label={`Color ${colorStr}`}
+                  />
+                );
+              })}
           </div>
         </div>
 
         <div className="flex justify-center pb-2">
           <button
             onClick={handleAgregar}
-            className="font-octosquares cursor-pointer text-[#CAFC00] font-black text-base py-3 px-8 rounded-full transition-colors w-[85%] shadow-lg border border-white/20 bg-white/10 backdrop-filter backdrop-blur-md hover:bg-[#CAFC00]/20 hover:text-[#CAFC00]"
+            disabled={!talleSeleccionado}
+            className={`font-octosquares font-black text-base py-3 px-8 rounded-full transition-all w-[85%] shadow-lg border border-white/20 bg-white/10 backdrop-filter backdrop-blur-md 
+              ${
+                !talleSeleccionado
+                  ? "text-red-400 opacity-50 cursor-not-allowed"
+                  : "text-[#CAFC00] cursor-pointer hover:bg-[#CAFC00]/20 hover:text-[#CAFC00]"
+              }`}
           >
-            Agregar
+            {!talleSeleccionado ? "Agotado" : "Agregar"}
           </button>
         </div>
       </div>
