@@ -53,8 +53,8 @@ const CarritoPage = () => {
   return (
     <div className="min-h-screen bg-black text-gray-50 font-sans pt-32 pb-16">
       <Nav />
-      <main className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1.8fr_1fr] gap-8 items-start">
-        <div className="bg-[#111111] p-6 rounded-[2rem] min-h-[500px]">
+      <main className="max-w-[1200px] mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-[1.8fr_1fr] gap-6 lg:gap-8 items-start">
+        <div className="bg-[#111111] p-4 sm:p-6 rounded-[2rem] min-h-[500px]">
           <ProdAgregados
             products={cartItems}
             onQuantityChange={updateQuantity}

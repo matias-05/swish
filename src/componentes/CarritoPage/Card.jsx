@@ -13,48 +13,48 @@ const Card = ({ product, onQuantityChange, onRemoveProduct }) => {
   };
 
   return (
-    <div className="p-3 rounded-[1.5rem] flex gap-5 w-full border border-white/20 bg-white/10 backdrop-filter backdrop-blur-md shadow-lg">
-      <div className="w-28 h-28 md:w-32 md:h-32 rounded-xl overflow-hidden flex-shrink-0">
+    <div className="p-3 sm:p-4 rounded-[1.5rem] flex flex-row gap-3 sm:gap-5 w-full border border-white/20 bg-white/5 hover:bg-white/10 transition-colors backdrop-filter backdrop-blur-md shadow-lg">
+      <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl overflow-hidden flex-shrink-0 bg-black/40">
         <img src={imagen} alt={nombre} className="w-full h-full object-cover" />
       </div>
 
-      <div className="flex flex-col justify-between flex-grow py-1">
-        <div className="flex justify-between items-start">
-          <h3 className="text-xl font-octosquares md:text-2xl font-black text-white tracking-wide">
+      <div className="flex flex-col justify-between flex-grow min-w-0 py-1">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4 mb-2 sm:mb-0">
+          <h3 className="text-base sm:text-lg md:text-xl font-octosquares font-black text-white tracking-wide leading-tight line-clamp-2">
             {nombre}
           </h3>
-          <div className="text-xl font-octosquares md:text-2xl font-medium text-white tracking-wider">
-            {totalPrice.toLocaleString("es-AR")} $
+          <div className="text-base sm:text-lg md:text-xl font-octosquares font-black text-[#CAFC00] tracking-wider shrink-0">
+            ${totalPrice.toLocaleString("es-AR")}
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mt-1 mb-2">
+        <div className="flex items-center gap-2 mb-3 sm:mb-0">
           <div
-            className={`w-4 h-4 rounded-full ${getBgColor(selectedColor)}`}
+            className={`w-4 h-4 rounded-full border border-white/30 ${getBgColor(selectedColor)}`}
           ></div>
-          <span className="text-sm font-octosquares font-medium text-white capitalize">
-            {selectedColor} | Talle: {selectedSize}{" "}
+          <span className="text-xs sm:text-sm font-octosquares font-medium text-white/80 capitalize truncate">
+            {selectedColor} | Talle: {selectedSize}
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex items-center rounded-2xl px-2 h-10 shadow-inner border border-white/20 bg-white/50 backdrop-filter backdrop-blur-md shadow-lg">
+        <div className="flex items-center justify-between sm:justify-start gap-3 sm:gap-6 mt-auto">
+          <div className="flex items-center rounded-xl px-1 sm:px-2 h-9 sm:h-10 border border-white/20 bg-black/50 backdrop-filter backdrop-blur-md">
             <button
               onClick={() =>
                 onQuantityChange(id, selectedSize, selectedColor, -1)
               }
-              className="w-8 flex cursor-pointer items-center justify-center text-black text-2xl font-medium pb-1 hover:opacity-70 transition-opacity"
+              className="w-7 sm:w-8 h-full flex cursor-pointer items-center justify-center text-white/70 hover:text-[#CAFC00] text-xl font-medium transition-colors"
             >
               −
             </button>
-            <span className="text-xl font-strasua font-black text-white px-2 drop-shadow-[0_0_6px_rgba(0,0,0,1)]">
+            <span className="text-base sm:text-lg font-strasua font-black text-white px-2 sm:px-3">
               {quantity}
             </span>
             <button
               onClick={() =>
                 onQuantityChange(id, selectedSize, selectedColor, 1)
               }
-              className="w-8 cursor-pointer flex items-center justify-center text-black text-2xl font-medium pb-1 hover:opacity-70 transition-opacity"
+              className="w-7 sm:w-8 h-full flex cursor-pointer items-center justify-center text-white/70 hover:text-[#CAFC00] text-xl font-medium transition-colors"
             >
               +
             </button>
@@ -62,10 +62,11 @@ const Card = ({ product, onQuantityChange, onRemoveProduct }) => {
 
           <button
             onClick={() => onRemoveProduct(id, selectedSize, selectedColor)}
-            className="h-10 cursor-pointer w-10 flex items-center justify-center border border-white/20 bg-white/50 backdrop-filter backdrop-blur-md shadow-lg rounded-2xl hover:opacity-80 transition-opacity"
+            className="h-9 w-9 sm:h-10 sm:w-10 flex cursor-pointer items-center justify-center border border-red-500/30 bg-red-500/10 hover:bg-red-500/30 backdrop-filter backdrop-blur-md rounded-xl transition-colors shrink-0"
+            aria-label="Eliminar producto"
           >
             <svg
-              className="w-6 h-6 text-black hover:text-red-600 transition-colors"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-red-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

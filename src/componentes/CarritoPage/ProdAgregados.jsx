@@ -3,15 +3,30 @@ import Card from "./Card";
 
 const ProdAgregados = ({ products, onQuantityChange, onRemoveProduct }) => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4 sm:gap-6">
       {products.length === 0 ? (
-        <p className="text-xl text-center text-gray-300 py-10">
-          El carrito está vacío.
-        </p>
+        <div className="flex flex-col items-center justify-center py-16 opacity-60">
+          <svg
+            className="w-16 h-16 text-[#CAFC00] mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+            ></path>
+          </svg>
+          <p className="text-xl font-octosquares text-white text-center">
+            Tu carrito está vacío
+          </p>
+        </div>
       ) : (
         products.map((product) => (
           <Card
-            key={product.id}
+            key={`${product.id}-${product.selectedSize}-${product.selectedColor}`}
             product={product}
             onQuantityChange={onQuantityChange}
             onRemoveProduct={onRemoveProduct}
