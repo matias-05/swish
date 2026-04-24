@@ -45,9 +45,8 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const scrollWithOffset = (el) => {
-    // Obtenemos la posición exacta del elemento
     const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
-    const yOffset = -120;
+    const yOffset = -64;
     window.scrollTo({ top: yCoordinate + yOffset, behavior: "smooth" });
   };
 

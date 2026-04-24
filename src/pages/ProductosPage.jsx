@@ -26,7 +26,7 @@ export default function Productos() {
   }, []);
 
   return (
-    <section className="min-h-[calc(100vh-80px)] py-12 px-8" id="productos">
+    <section className="min-h-[calc(100vh)] py-12 px-8" id="productos">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {productos.map((producto) => (
