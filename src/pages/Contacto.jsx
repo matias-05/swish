@@ -10,10 +10,10 @@ export default function Contacto() {
   return (
     <section
       id="contacto"
-      className="min-h-[calc(90vh)] w-full bg-black flex flex-col pt-24"
+      className="min-h-[90vh] w-full bg-black flex flex-col pt-20 md:pt-24"
     >
-      <div className="flex-1 flex flex-col items-center justify-center px-4 text-center pb-20">
-        <div className="w-24 h-24 mb-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 text-center pb-16 md:pb-20">
+        <div className="w-20 h-20 md:w-24 md:h-24 mb-6 md:mb-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
           <img
             src="/imagenes/otros/logo.jpeg"
             alt="SWISH Logo"
@@ -21,11 +21,11 @@ export default function Contacto() {
           />
         </div>
 
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-strasua text-white mb-6 tracking-widest drop-shadow-md">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-strasua text-white mb-4 md:mb-6 tracking-widest drop-shadow-md px-2">
           ¡Gracias por confiar!
         </h2>
 
-        <p className="text-white/70 font-octosquares max-w-lg text-base md:text-lg mb-10 leading-relaxed">
+        <p className="text-white/70 font-octosquares max-w-lg text-sm sm:text-base md:text-lg mb-8 md:mb-10 leading-relaxed px-4">
           Cada jugada cuenta. Gracias por permitir que{" "}
           <span className="text-[#CAFC00] font-black drop-shadow-[0_0_5px_rgba(202,252,0,0.5)]">
             SWISH
@@ -33,22 +33,22 @@ export default function Contacto() {
           te acompañe en la cancha y sea parte de tu historia.
         </p>
 
-        <div className="w-16 h-1 bg-white/20 rounded-full mb-10"></div>
+        <div className="w-12 md:w-16 h-1 bg-white/20 rounded-full mb-8 md:mb-10"></div>
 
-        <h3 className="text-4xl md:text-6xl font-strasua text-[#CAFC00] italic tracking-tighter drop-shadow-[0_0_12px_rgba(202,252,0,0.4)]">
+        <h3 className="text-3xl sm:text-4xl md:text-6xl font-strasua text-[#CAFC00] italic tracking-tighter drop-shadow-[0_0_12px_rgba(202,252,0,0.4)] px-2">
           BE THE DIFFERENCE
         </h3>
       </div>
 
-      <div className="w-full bg-[#111111] border-t border-white/10 py-12 px-6 md:px-12">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="w-full bg-[#111111] border-t border-white/10 py-10 md:py-12 px-4 sm:px-6 md:px-12">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center min-[500px]:justify-items-start lg:justify-items-center">
           <a
             href={`https://wa.me/${contacto.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 group cursor-pointer w-fit mx-auto sm:mx-0"
+            className="flex items-center gap-4 group cursor-pointer w-full max-w-[200px]"
           >
-            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
+            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
               <svg
                 className="w-5 h-5 text-white group-hover:text-[#CAFC00] transition-colors"
                 fill="none"
@@ -65,7 +65,7 @@ export default function Contacto() {
               <span className="text-[10px] text-white/50 font-octosquares uppercase tracking-wider group-hover:text-[#CAFC00] transition-colors">
                 WhatsApp
               </span>
-              <span className="text-sm text-white font-octosquares font-bold">
+              <span className="text-sm text-white font-octosquares font-bold truncate">
                 Escribinos
               </span>
             </div>
@@ -75,9 +75,9 @@ export default function Contacto() {
             href={`https://instagram.com/${contacto.instagram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 group cursor-pointer w-fit mx-auto sm:mx-0"
+            className="flex items-center gap-4 group cursor-pointer w-full max-w-[200px]"
           >
-            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
+            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
               <svg
                 className="w-5 h-5 text-white group-hover:text-[#CAFC00] transition-colors"
                 fill="none"
@@ -96,17 +96,17 @@ export default function Contacto() {
               <span className="text-[10px] text-white/50 font-octosquares uppercase tracking-wider group-hover:text-[#CAFC00] transition-colors">
                 Instagram
               </span>
-              <span className="text-sm text-white font-octosquares font-bold">
-                @swish.pna
+              <span className="text-sm text-white font-octosquares font-bold truncate">
+                @{contacto.instagram}
               </span>
             </div>
           </a>
 
           <a
             href={`mailto:${contacto.email}`}
-            className="flex items-center gap-4 group cursor-pointer w-fit mx-auto sm:mx-0"
+            className="flex items-center gap-4 group cursor-pointer w-full max-w-[200px]"
           >
-            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
+            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
               <svg
                 className="w-5 h-5 text-white group-hover:text-[#CAFC00] transition-colors"
                 fill="none"
@@ -124,14 +124,14 @@ export default function Contacto() {
               <span className="text-[10px] text-white/50 font-octosquares uppercase tracking-wider group-hover:text-[#CAFC00] transition-colors">
                 Email
               </span>
-              <span className="text-sm text-white font-octosquares font-bold">
+              <span className="text-sm text-white font-octosquares font-bold truncate">
                 Enviar Mail
               </span>
             </div>
           </a>
 
-          <div className="flex items-center gap-4 group cursor-default w-fit mx-auto sm:mx-0">
-            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 transition-all duration-300">
+          <div className="flex items-center gap-4 group cursor-default w-full max-w-[200px]">
+            <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 transition-all duration-300">
               <svg
                 className="w-5 h-5 text-white group-hover:text-[#CAFC00] transition-colors"
                 fill="none"
@@ -149,7 +149,7 @@ export default function Contacto() {
               <span className="text-[10px] text-white/50 font-octosquares uppercase tracking-wider group-hover:text-[#CAFC00] transition-colors">
                 Ubicación
               </span>
-              <span className="text-sm text-white font-octosquares font-bold">
+              <span className="text-sm text-white font-octosquares font-bold truncate">
                 Paraná, ER
               </span>
             </div>
