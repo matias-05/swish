@@ -3,7 +3,9 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./componentes/Navbar";
 import InicioPage from "./pages/InicioPage";
 import Productos from "./pages/ProductosPage";
+import SobreNosotros from "./pages/SobreNosotros";
 import CarritoPage from "./pages/CarritoPage";
+import Contacto from "./pages/Contacto";
 import AdminPage from "./pages/AdminPage";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
@@ -12,6 +14,8 @@ const LandingPageCompleta = () => (
   <>
     <InicioPage />
     <Productos />
+    <SobreNosotros />
+    <Contacto />
   </>
 );
 

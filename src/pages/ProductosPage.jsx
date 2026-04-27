@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
+import ArrowDownIcon from "../componentes/ArrowDownIcon";
 import CardProd from "../componentes/ProductosPage/CardProd";
 
 export default function Productos() {
@@ -32,6 +33,17 @@ export default function Productos() {
           {productos.map((producto) => (
             <CardProd key={producto.id} producto={producto} />
           ))}
+        </div>
+      </div>
+      <div className="w-full flex justify-center mt-36 pb-4">
+        <div className="animate-bounce">
+          <a
+            href="#sobre-nosotros"
+            className="cursor-pointer transition-transform hover:scale-125 block"
+            aria-label="Ir a Sobre Nosotros"
+          >
+            <ArrowDownIcon />
+          </a>
         </div>
       </div>
     </section>

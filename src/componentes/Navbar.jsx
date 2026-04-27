@@ -45,9 +45,25 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const scrollWithOffset = (el) => {
-    const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
-    const yOffset = -64;
-    window.scrollTo({ top: yCoordinate + yOffset, behavior: "smooth" });
+    const targetId = `#${el.id}`;
+
+    if (location.pathname === "/" && window.location.hash === targetId) {
+      return;
+    }
+
+    if (el.id === "contacto") {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    const yOffset = -120;
+    const yCoordinate =
+      el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: yCoordinate, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -82,6 +98,9 @@ export default function Navbar() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveHash(`#${entry.target.id}`);
+            if (window.history.replaceState) {
+              window.history.replaceState(null, null, `#${entry.target.id}`);
+            }
           }
         });
       };

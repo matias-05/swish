@@ -1,4 +1,4 @@
-import ArrowDownIcon from "../componentes/InicioPage/ArrowDownIcon";
+import ArrowDownIcon from "../componentes/ArrowDownIcon";
 
 export default function InicioPage() {
   return (
