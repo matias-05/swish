@@ -128,10 +128,30 @@ export default function Navbar() {
   const isCarritoPage = location.pathname === "/carrito";
 
   return (
-    <nav className="fixed w-full top-0 left-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/5 h-24 flex items-center">
+    <nav className="fixed w-full top-0 left-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/5 h-24 flex items-center transition-all duration-500 ease-out nav-slide-down">
+      <style>{`
+        .nav-slide-down {
+          animation: slideDown 0.6s ease-out forwards;
+        }
+        .nav-item-fade {
+          opacity: 0;
+          animation: navItemFadeIn 0.5s ease-out forwards;
+        }
+        @keyframes slideDown {
+          from { transform: translateY(-100%); }
+          to { transform: translateY(0); }
+        }
+        @keyframes navItemFadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
       <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center w-full">
-          <div className="flex-1 flex items-center justify-start">
+          <div
+            className="flex-1 flex items-center justify-start nav-item-fade"
+            style={{ animationDelay: "0.2s" }}
+          >
             <HashLink
               smooth
               to="/#inicio"
@@ -150,7 +170,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex flex-1 justify-center space-x-10">
-            {navLinks.map((link) => {
+            {navLinks.map((link, index) => {
               const isActive = !isCarritoPage && checkIsActive(link);
 
               return (
@@ -159,11 +179,12 @@ export default function Navbar() {
                   smooth
                   to={link.to}
                   scroll={scrollWithOffset}
-                  className={`text-sm font-octosquares tracking-wide transition-all duration-300 relative py-1 group ${
+                  className={`nav-item-fade text-sm font-octosquares tracking-wide transition-all duration-300 relative py-1 group ${
                     isActive
                       ? "font-bold text-[#CAFC00] drop-shadow-[0_0_12px_#CAFC00]"
                       : "text-white hover:text-[#CAFC00]"
                   }`}
+                  style={{ animationDelay: `${0.3 + index * 0.1}s` }}
                 >
                   {link.name}
                   <span
@@ -179,16 +200,19 @@ export default function Navbar() {
             })}
           </div>
 
-          <div className="flex-1 flex items-center justify-end gap-6">
+          <div
+            className="flex-1 flex items-center justify-end gap-6 nav-item-fade"
+            style={{ animationDelay: "0.7s" }}
+          >
             <div className="relative cursor-pointer hover:scale-110 transition-transform flex items-center">
               <Link
                 to="/carrito"
                 aria-label="Ir al carrito"
-                className="relative"
+                className="relative group"
               >
                 <CartIcon isCartActive={isCarritoPage} />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#CAFC00] text-black text-xs font-black font-octosquares rounded-full h-5 w-5 flex items-center justify-center shadow-[0_0_10px_rgba(202,252,0,0.5)]">
+                  <span className="absolute -top-2 -right-2 bg-[#CAFC00] text-black text-xs font-black font-octosquares rounded-full h-5 w-5 flex items-center justify-center shadow-[0_0_10px_rgba(202,252,0,0.5)] group-hover:scale-110 transition-transform">
                     {totalItems}
                   </span>
                 )}

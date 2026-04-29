@@ -51,10 +51,20 @@ const CarritoPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-50 font-sans pt-32 pb-16">
+    <div className="min-h-screen bg-black text-gray-50 font-sans pt-32 pb-16 overflow-hidden">
+      <style>{`
+        @keyframes slideInFromLeft {
+          from { opacity: 0; transform: translateX(-40px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInFromRight {
+          from { opacity: 0; transform: translateX(40px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
       <Nav />
       <main className="max-w-[1200px] mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-[1.8fr_1fr] gap-6 lg:gap-8 items-start">
-        <div className="bg-[#111111] p-4 sm:p-6 rounded-[2rem] min-h-[500px]">
+        <div className="bg-[#111111] p-4 sm:p-6 rounded-[2rem] min-h-[500px] opacity-0 animate-[slideInFromLeft_0.6s_cubic-bezier(0.16,1,0.3,1)_0.2s_forwards]">
           <ProdAgregados
             products={cartItems}
             onQuantityChange={updateQuantity}
@@ -62,7 +72,7 @@ const CarritoPage = () => {
           />
         </div>
 
-        <div className="sticky top-32">
+        <div className="sticky top-32 opacity-0 animate-[slideInFromRight_0.6s_cubic-bezier(0.16,1,0.3,1)_0.4s_forwards]">
           <Resumen
             totalProducts={totalProducts}
             totalAmount={totalAmount}
