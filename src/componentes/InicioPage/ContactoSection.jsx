@@ -35,7 +35,7 @@ export default function Contacto() {
     <section
       id="contacto"
       ref={sectionRef}
-      className="min-h-[90vh] w-full bg-black flex flex-col pt-20 md:pt-24 overflow-hidden"
+      className="h-[90vh] w-full bg-black flex flex-col  overflow-hidden"
     >
       <style>{`
         @keyframes fadeZoomIn {
@@ -51,9 +51,9 @@ export default function Contacto() {
         .anim-slide-bottom { animation: slideInFromBottom 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
       `}</style>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-4 text-center pb-16 md:pb-20">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 text-center md:py-12">
         <div
-          className={`w-20 h-20 md:w-24 md:h-24 mb-6 md:mb-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,255,255,0.05)] anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
+          className={`w-16 h-16 md:w-24 md:h-24 mb-4 md:mb-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,255,255,0.05)] anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
         >
           <img
             src="/imagenes/otros/logo.jpeg"
@@ -63,14 +63,13 @@ export default function Contacto() {
         </div>
 
         <h2
-          className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-strasua text-white mb-4 md:mb-6 tracking-widest drop-shadow-md px-2 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
+          className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-strasua text-white mb-3 md:mb-6 tracking-widest drop-shadow-md px-2 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
           style={{ animationDelay: "0.1s" }}
         >
           ¡Gracias por confiar!
         </h2>
-
         <p
-          className={`text-white/70 font-octosquares max-w-lg text-sm sm:text-base md:text-lg mb-8 md:mb-10 leading-relaxed px-4 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
+          className={`text-white/70 font-octosquares max-w-lg text-sm md:text-lg mb-6 md:mb-10 leading-relaxed px-4 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
           style={{ animationDelay: "0.2s" }}
         >
           Cada jugada cuenta. Gracias por permitir que{" "}
@@ -81,20 +80,20 @@ export default function Contacto() {
         </p>
 
         <div
-          className={`w-12 md:w-16 h-1 bg-white/20 rounded-full mb-8 md:mb-10 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
+          className={`w-12 md:w-16 h-1 bg-white/20 rounded-full mb-6 md:mb-10 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
           style={{ animationDelay: "0.3s" }}
         ></div>
 
         <h3
-          className={`text-3xl sm:text-4xl md:text-6xl font-strasua text-[#CAFC00] italic tracking-tighter drop-shadow-[0_0_12px_rgba(202,252,0,0.4)] px-2 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
+          className={`text-2xl sm:text-4xl md:text-6xl font-strasua text-[#CAFC00] italic tracking-tighter drop-shadow-[0_0_12px_rgba(202,252,0,0.4)] px-2 anim-hidden ${isVisible ? "anim-fade-zoom" : ""}`}
           style={{ animationDelay: "0.4s" }}
         >
           BE THE DIFFERENCE
         </h3>
       </div>
 
-      <div className="w-full bg-[#111111] border-t border-white/10 py-10 md:py-12 px-4 sm:px-6 md:px-12">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center min-[500px]:justify-items-start lg:justify-items-center">
+      <div className="w-full bg-[#111111] border-t border-white/10 py-6 md:py-12 px-4 sm:px-6 md:px-12 shrink-0">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-2 min-[500px]:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 justify-items-center min-[500px]:justify-items-start lg:justify-items-center">
           {[
             {
               href: `https://wa.me/${contacto.whatsapp}`,
@@ -148,12 +147,12 @@ export default function Contacto() {
                 href={item.href}
                 target={item.target}
                 rel={item.target ? "noopener noreferrer" : undefined}
-                className={`flex items-center gap-4 group ${item.isStatic ? "cursor-default" : "cursor-pointer"} w-full max-w-[200px] anim-hidden ${isVisible ? "anim-slide-bottom" : ""}`}
+                className={`flex  items-center gap-4 group ${item.isStatic ? "cursor-default" : "cursor-pointer"} w-full max-w-[200px] anim-hidden ${isVisible ? "anim-slide-bottom" : ""}`}
                 style={{ animationDelay: `${0.5 + index * 0.1}s` }}
               >
-                <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#CAFC00]/10 group-hover:border-[#CAFC00]/50 group-hover:scale-110 transition-all duration-300">
                   <svg
-                    className="w-5 h-5 text-white group-hover:text-[#CAFC00] transition-colors"
+                    className="w-4 h-4 md:w-5 md:h-5 text-white group-hover:text-[#CAFC00] transition-colors"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

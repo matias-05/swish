@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import ArrowDownIcon from "../componentes/ArrowDownIcon";
+import { HashLink } from "react-router-hash-link";
+import ArrowDownIcon from "../ArrowDownIcon";
 
-export default function SobreNosotros() {
+export default function SobreSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
@@ -26,11 +27,18 @@ export default function SobreNosotros() {
     };
   }, []);
 
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section
       id="sobre-nosotros"
       ref={sectionRef}
-      className="relative min-h-[80vh] w-full bg-black flex flex-col justify-center items-center pt-20 pb-32 md:py-24 px-4 sm:px-8 overflow-hidden"
+      className="relative w-full bg-black flex flex-col justify-center items-center md:min-h-[95vh] pb-24 md:py-24 px-4 sm:px-8 overflow-hidden"
     >
       <style>{`
         @keyframes slideInLeft {
@@ -51,9 +59,9 @@ export default function SobreNosotros() {
         .anim-slide-right { animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
       `}</style>
 
-      <div className="max-w-[1200px] w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-12">
+      <div className="w-full max-w-[1200px] h-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-y-0 md:gap-8 lg:gap-12">
         <div
-          className={`flex flex-col items-center text-center group anim-hidden ${isVisible ? "anim-slide-left" : ""}`}
+          className={`flex flex-col items-center justify-center min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-left" : ""}`}
         >
           <h2 className="font-strasua text-3xl md:text-4xl text-[#CAFC00] tracking-widest mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(202,252,0,0.3)]">
             ENVIOS
@@ -75,7 +83,7 @@ export default function SobreNosotros() {
         </div>
 
         <div
-          className={`flex flex-col items-center text-center group anim-hidden ${isVisible ? "anim-slide-up" : ""}`}
+          className={`flex flex-col items-center justify-center min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-up" : ""}`}
           style={{ animationDelay: "0.2s" }}
         >
           <h2 className="font-strasua text-3xl md:text-4xl text-[#CAFC00] tracking-widest mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(202,252,0,0.3)]">
@@ -98,7 +106,7 @@ export default function SobreNosotros() {
         </div>
 
         <div
-          className={`flex flex-col items-center text-center group anim-hidden ${isVisible ? "anim-slide-right" : ""}`}
+          className={`flex flex-col items-center justify-center min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-right" : ""}`}
           style={{ animationDelay: "0.4s" }}
         >
           <h2 className="font-strasua text-3xl md:text-4xl text-[#CAFC00] tracking-widest mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(202,252,0,0.3)]">
@@ -124,12 +132,14 @@ export default function SobreNosotros() {
         style={{ animationDelay: "0.8s" }}
       >
         <div className="animate-bounce">
-          <a
-            href="#contacto"
+          <HashLink
+            smooth
+            to="/#contacto"
+            scroll={scrollToBottom}
             className="cursor-pointer transition-transform hover:scale-125 block text-[#CAFC00] hover:drop-shadow-[0_0_8px_rgba(202,252,0,0.4)]"
           >
             <ArrowDownIcon />
-          </a>
+          </HashLink>
         </div>
       </div>
     </section>

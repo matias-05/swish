@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../config/firebase";
-import ArrowDownIcon from "../componentes/ArrowDownIcon";
-import CardProd from "../componentes/ProductosPage/CardProd";
+import { db } from "../../config/firebase";
+import ArrowDownIcon from "../ArrowDownIcon";
+import CardProd from "../ProductosPage/CardProd";
 
-export default function Productos() {
+export default function ProductosSection() {
   const [productos, setProductos] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
 

@@ -2,22 +2,10 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./componentes/Navbar";
 import InicioPage from "./pages/InicioPage";
-import Productos from "./pages/ProductosPage";
-import SobreNosotros from "./pages/SobreNosotros";
 import CarritoPage from "./pages/CarritoPage";
-import Contacto from "./pages/Contacto";
 import AdminPage from "./pages/AdminPage";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
-
-const LandingPageCompleta = () => (
-  <>
-    <InicioPage />
-    <Productos />
-    <SobreNosotros />
-    <Contacto />
-  </>
-);
 
 function App() {
   const location = useLocation();
@@ -40,15 +28,12 @@ function App() {
   return (
     <div className="bg-black min-h-screen font-sans text-gray-900 overflow-x-hidden">
       <Navbar />
+      <Routes>
+        <Route path="/" element={<InicioPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/carrito" element={<CarritoPage />} />
+      </Routes>
       <Toaster position="bottom-right" reverseOrder={false} />
-
-      <main>
-        <Routes>
-          <Route path="/" element={<LandingPageCompleta />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/carrito" element={<CarritoPage />} />
-        </Routes>
-      </main>
     </div>
   );
 }
