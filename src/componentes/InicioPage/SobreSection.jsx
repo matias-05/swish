@@ -61,7 +61,7 @@ export default function SobreSection() {
 
       <div className="w-full max-w-[1200px] h-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-y-0 md:gap-8 lg:gap-12">
         <div
-          className={`flex flex-col items-center justify-center min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-left" : ""}`}
+          className={`flex flex-col items-center justify-center md:justify-start min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-left" : ""}`}
         >
           <h2 className="font-strasua text-3xl md:text-4xl text-[#CAFC00] tracking-widest mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(202,252,0,0.3)]">
             ENVIOS
@@ -83,7 +83,7 @@ export default function SobreSection() {
         </div>
 
         <div
-          className={`flex flex-col items-center justify-center min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-up" : ""}`}
+          className={`flex flex-col items-center justify-center md:justify-start min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-up" : ""}`}
           style={{ animationDelay: "0.2s" }}
         >
           <h2 className="font-strasua text-3xl md:text-4xl text-[#CAFC00] tracking-widest mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(202,252,0,0.3)]">
@@ -106,7 +106,7 @@ export default function SobreSection() {
         </div>
 
         <div
-          className={`flex flex-col items-center justify-center min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-right" : ""}`}
+          className={`flex flex-col items-center justify-center md:justify-start min-h-screen md:min-h-0 text-center group anim-hidden ${isVisible ? "anim-slide-right" : ""}`}
           style={{ animationDelay: "0.4s" }}
         >
           <h2 className="font-strasua text-3xl md:text-4xl text-[#CAFC00] tracking-widest mb-4 md:mb-6 drop-shadow-[0_0_8px_rgba(202,252,0,0.3)]">
