@@ -1,9 +1,30 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { HashLink } from "react-router-hash-link";
+import { Link } from "react-router-dom";
 import ArrowDownIcon from "../ArrowDownIcon";
+import { db } from "../../config/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { Flame } from "lucide-react";
 
 export default function InicioSection() {
   const imageRef = useRef(null);
+
+  const [isPredictorOpen, setIsPredictorOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchPredictorStatus = async () => {
+      try {
+        const docRef = doc(db, "configuracion", "nba_predictor");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().habilitado) {
+          setIsPredictorOpen(true);
+        }
+      } catch (error) {
+        console.error("Error al obtener estado de predicciones:", error);
+      }
+    };
+    fetchPredictorStatus();
+  }, []);
 
   const handleMouseMove = (e) => {
     if (!imageRef.current) return;
@@ -63,35 +84,53 @@ export default function InicioSection() {
             alt="Jugador de baloncesto Swish"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="w-full h-auto max-h-[45vh] md:max-h-[60vh] object-contain grayscale hover:grayscale-0 will-change-transform drop-shadow-[0_0_15px_rgba(202,252,0,0)] hover:drop-shadow-[0_0_25px_rgba(202,252,0,0.2)]"
+            className="w-full h-auto max-h-[45vh] md:max-h-[55vh] object-contain grayscale hover:grayscale-0 will-change-transform drop-shadow-[0_0_15px_rgba(202,252,0,0)] hover:drop-shadow-[0_0_25px_rgba(202,252,0,0.2)]"
           />
         </div>
 
-        <div className="flex flex-row items-baseline justify-center gap-1.5 sm:gap-3 z-10 w-full whitespace-nowrap">
-          <span
-            className="font-fuggles text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl text-white animate-fade-in-up"
-            style={{ animationDelay: "200ms" }}
-          >
-            Lo
-          </span>
-          <span
-            className="font-strasua text-3xl min-[400px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#CAFC00] uppercase tracking-tighter italic animate-fade-in-up"
-            style={{ animationDelay: "400ms" }}
-          >
-            MEJOR
-          </span>
-          <span
-            className="font-fuggles text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl text-white ml-1 sm:ml-2 animate-fade-in-up"
-            style={{ animationDelay: "600ms" }}
-          >
-            para los
-          </span>
-          <span
-            className="font-strasua text-3xl min-[400px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#CAFC00] uppercase tracking-tighter italic animate-fade-in-up"
-            style={{ animationDelay: "800ms" }}
-          >
-            MEJORES
-          </span>
+        <div className="flex flex-col items-center gap-6 z-10 w-full">
+          {/* Textos principales */}
+          <div className="flex flex-row items-baseline justify-center gap-1.5 sm:gap-3 whitespace-nowrap">
+            <span
+              className="font-fuggles text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl text-white animate-fade-in-up"
+              style={{ animationDelay: "200ms" }}
+            >
+              Lo
+            </span>
+            <span
+              className="font-strasua text-3xl min-[400px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#CAFC00] uppercase tracking-tighter italic animate-fade-in-up"
+              style={{ animationDelay: "400ms" }}
+            >
+              MEJOR
+            </span>
+            <span
+              className="font-fuggles text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl text-white ml-1 sm:ml-2 animate-fade-in-up"
+              style={{ animationDelay: "600ms" }}
+            >
+              para los
+            </span>
+            <span
+              className="font-strasua text-3xl min-[400px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#CAFC00] uppercase tracking-tighter italic animate-fade-in-up"
+              style={{ animationDelay: "800ms" }}
+            >
+              MEJORES
+            </span>
+          </div>
+
+          {isPredictorOpen && (
+            <div
+              className="animate-fade-in-up mt-2"
+              style={{ animationDelay: "1000ms" }}
+            >
+              <Link
+                to="/predict-nba"
+                className="flex items-center gap-2 bg-[#CAFC00] text-black px-6 py-3 rounded-full font-strasua text-sm sm:text-base md:text-lg hover:scale-105 hover:bg-white transition-all shadow-[0_0_15px_rgba(202,252,0,0.4)] hover:shadow-[0_0_25px_rgba(255,255,255,0.6)] cursor-pointer"
+              >
+                <Flame size={20} className="animate-pulse" />
+                PREDICCIONES ABIERTAS
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
