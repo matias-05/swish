@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { HashLink } from "react-router-hash-link";
 import ArrowDownIcon from "../ArrowDownIcon";
+import { Link } from "react-router-dom";
 
 export default function SobreSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -100,9 +101,12 @@ export default function SobreSection() {
             <br />
             para vos
           </p>
-          <button className="bg-[#2A2A2A] hover:bg-[#333] text-[#CAFC00] font-octosquares font-black text-base md:text-lg py-3 px-6 sm:px-8 rounded-full transition-all duration-300 shadow-lg border border-white/5 cursor-pointer hover:shadow-[0_0_15px_rgba(202,252,0,0.2)]">
-            Ver Guía de Talles
-          </button>
+
+          <Link to="/talles">
+            <button className="bg-[#2A2A2A] hover:bg-[#333] text-[#CAFC00] font-octosquares font-black text-base md:text-lg py-3 px-6 sm:px-8 rounded-full transition-all duration-300 shadow-lg border border-white/5 cursor-pointer hover:shadow-[0_0_15px_rgba(202,252,0,0.2)]">
+              Ver Guía de Talles
+            </button>
+          </Link>
         </div>
 
         <div

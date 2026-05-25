@@ -4,6 +4,7 @@ import Navbar from "./componentes/Navbar";
 import InicioPage from "./pages/InicioPage";
 import CarritoPage from "./pages/CarritoPage";
 import AdminPage from "./pages/AdminPage";
+import GuiaTallesPage from "./pages/GuiaTallesPage";
 import PredictPage from "./pages/PredictPage";
 import { Toaster } from "react-hot-toast";
 import PredictRanking from "./pages/PredictRanking";
@@ -34,6 +35,7 @@ function App() {
         <Route path="/" element={<InicioPage />} />
         <Route path="/predict-nba" element={<PredictPage />} />
         <Route path="/ranking" element={<PredictRanking />} />
+        <Route path="/talles" element={<GuiaTallesPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/carrito" element={<CarritoPage />} />
       </Routes>
