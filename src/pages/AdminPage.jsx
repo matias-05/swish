@@ -21,9 +21,11 @@ const AdminPage = () => {
   const [authError, setAuthError] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("productos");
+
   const [productos, setProductos] = useState([]);
   const [productoEditando, setProductoEditando] = useState(null);
   const [mensajeForm, setMensajeForm] = useState("");
+
   const [nbaConfig, setNbaConfig] = useState({
     equipo1: "BOSTON CELTICS",
     equipo2: "DALLAS MAVERICKS",
@@ -284,40 +286,61 @@ const AdminPage = () => {
   return (
     <div className="min-h-screen bg-black pt-24 pb-12 px-4 md:px-8">
       <div className="max-w-[1400px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-white/10 pb-6 gap-4 overflow-x-auto">
-          <h1 className="text-4xl font-strasua text-[#CAFC00]">
-            Panel de Control
-          </h1>
+        <div className="flex flex-col lg:flex-row justify-between items-center mb-6 md:mb-8 border-b border-white/10 pb-4 md:pb-6 gap-4 md:gap-6">
+          {/* Título y Botón Salir (Visible en Móvil) */}
+          <div className="flex justify-between items-center w-full lg:w-auto">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-strasua text-[#CAFC00]">
+              Panel de Control
+            </h1>
+            <button
+              onClick={handleLogout}
+              className="lg:hidden border border-red-500/50 text-red-500 px-4 py-1.5 rounded-full font-octosquares text-xs hover:bg-red-500/10 transition-colors"
+            >
+              Salir
+            </button>
+          </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex bg-white/5 rounded-full p-1 border border-white/10 whitespace-nowrap">
+          <div className="w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="flex bg-white/5 rounded-full p-1 border border-white/10 whitespace-nowrap min-w-max mx-auto lg:mx-0">
               <button
                 onClick={() => setActiveTab("productos")}
-                className={`px-4 sm:px-6 py-2 rounded-full font-octosquares font-bold transition-all ${activeTab === "productos" ? "bg-[#CAFC00] text-black" : "text-white/50 hover:text-white"}`}
+                className={`px-4 sm:px-6 py-2 rounded-full font-octosquares text-xs sm:text-sm font-bold transition-all ${
+                  activeTab === "productos"
+                    ? "bg-[#CAFC00] text-black shadow-md"
+                    : "text-white/50 hover:text-white"
+                }`}
               >
                 Stock
               </button>
               <button
                 onClick={() => setActiveTab("nba")}
-                className={`px-4 sm:px-6 py-2 rounded-full font-octosquares font-bold transition-all ${activeTab === "nba" ? "bg-[#CAFC00] text-black" : "text-white/50 hover:text-white"}`}
+                className={`px-4 sm:px-6 py-2 rounded-full font-octosquares text-xs sm:text-sm font-bold transition-all ${
+                  activeTab === "nba"
+                    ? "bg-[#CAFC00] text-black shadow-md"
+                    : "text-white/50 hover:text-white"
+                }`}
               >
                 Configurar NBA
               </button>
               <button
                 onClick={() => setActiveTab("resultados")}
-                className={`px-4 sm:px-6 py-2 rounded-full font-octosquares font-bold transition-all ${activeTab === "resultados" ? "bg-[#CAFC00] text-black" : "text-white/50 hover:text-white"}`}
+                className={`px-4 sm:px-6 py-2 rounded-full font-octosquares text-xs sm:text-sm font-bold transition-all ${
+                  activeTab === "resultados"
+                    ? "bg-[#CAFC00] text-black shadow-md"
+                    : "text-white/50 hover:text-white"
+                }`}
               >
                 Resultados
               </button>
             </div>
-
-            <button
-              onClick={handleLogout}
-              className="border border-red-500/50 text-red-500 px-6 py-2 rounded-full font-octosquares hover:bg-red-500/10 transition-colors"
-            >
-              Salir
-            </button>
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="hidden lg:block border border-red-500/50 text-red-500 px-6 py-2 rounded-full font-octosquares text-sm hover:bg-red-500/10 transition-colors"
+          >
+            Salir
+          </button>
         </div>
 
         {activeTab === "productos" && (
