@@ -7,6 +7,7 @@ import { Trophy, CheckCircle2, Flame, Lock, ListOrdered } from "lucide-react";
 export default function PredictPage() {
   const [config, setConfig] = useState(null);
   const [status, setStatus] = useState("loading_config");
+  const [formError, setFormError] = useState("");
 
   const [formData, setForm] = useState({
     nombre: "",
@@ -85,12 +86,30 @@ export default function PredictPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
+
+    const phoneRegex = /^[0-9]{8,15}$/;
+    const cleanWhatsapp = formData.whatsapp.replace(/\D/g, "");
+
+    if (!phoneRegex.test(cleanWhatsapp)) {
+      setFormError(
+        "Por favor, ingresá un número de WhatsApp válido (solo números, código de área incluido).",
+      );
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailId = formData.email.toLowerCase().trim();
+
+    if (!emailRegex.test(emailId)) {
+      setFormError("El formato del correo electrónico no es válido.");
+      return;
+    }
+
     setStatus("loading");
 
     try {
-      const emailId = formData.email.toLowerCase().trim();
       const userDocRef = doc(db, "predicciones_nba", emailId);
-
       const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
@@ -113,7 +132,7 @@ export default function PredictPage() {
         {
           nombre: formData.nombre,
           email: emailId,
-          whatsapp: formData.whatsapp,
+          whatsapp: cleanWhatsapp,
           predicciones: {
             [config.juegoActivo]: formData.ganador,
           },
@@ -130,13 +149,16 @@ export default function PredictPage() {
         JSON.stringify({
           nombre: formData.nombre,
           email: emailId,
-          whatsapp: formData.whatsapp,
+          whatsapp: cleanWhatsapp,
         }),
       );
 
       setStatus("success");
     } catch (error) {
       console.error(error);
+      setFormError(
+        "Hubo un error al guardar tu predicción. Intentá nuevamente.",
+      );
       setStatus("error");
     }
   };
@@ -245,6 +267,12 @@ export default function PredictPage() {
         className="w-full max-w-2xl bg-[#0a0a0a] p-5 sm:p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 shadow-2xl space-y-5 sm:space-y-6 animate-fade-in-up flex-shrink-0"
         style={{ animationDelay: "200ms" }}
       >
+        {formError && (
+          <div className="bg-red-500/10 border border-red-500 text-red-500 text-xs sm:text-sm font-octosquares p-3 rounded-xl text-center animate-shake">
+            {formError}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-1 sm:space-y-2">
             <label className="text-[10px] font-octosquares text-white/50 uppercase ml-2">
@@ -260,16 +288,20 @@ export default function PredictPage() {
           </div>
           <div className="space-y-1 sm:space-y-2">
             <label className="text-[10px] font-octosquares text-white/50 uppercase ml-2">
-              WhatsApp
+              WhatsApp (Solo números)
             </label>
             <input
               required
               type="tel"
+              inputMode="numeric"
+              pattern="[0-9\s\-\+]+"
+              placeholder="Ej: 3431234567"
               value={formData.whatsapp}
+              onChange={(e) => {
+                const soloNumeros = e.target.value.replace(/[^0-9\s\-\+]/g, "");
+                setForm({ ...formData, whatsapp: soloNumeros });
+              }}
               className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-white text-sm sm:text-base focus:outline-none focus:border-[#CAFC00] transition-all font-octosquares"
-              onChange={(e) =>
-                setForm({ ...formData, whatsapp: e.target.value })
-              }
             />
           </div>
         </div>
@@ -281,6 +313,8 @@ export default function PredictPage() {
           <input
             required
             type="email"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            placeholder="tu@correo.com"
             value={formData.email}
             readOnly={!!localStorage.getItem("swish_user_data")}
             className={`w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-white text-sm sm:text-base focus:outline-none focus:border-[#CAFC00] transition-all font-octosquares ${localStorage.getItem("swish_user_data") ? "opacity-50 cursor-not-allowed" : ""}`}
