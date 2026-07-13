@@ -42,6 +42,14 @@ export default function CardProd({ producto }) {
     }
   }, [producto]);
 
+  // LÓGICA DE DESCUENTO
+  const porcentajeDescuento = producto.descuento || 0;
+  const precioOriginal = producto.precio || 0;
+  const precioFinal =
+    porcentajeDescuento > 0
+      ? precioOriginal - precioOriginal * (porcentajeDescuento / 100)
+      : precioOriginal;
+
   const handleAgregar = () => {
     if (!talleSeleccionado || !colorSeleccionado) {
       toast.error("Selecciona un talle y color", {
@@ -55,7 +63,16 @@ export default function CardProd({ producto }) {
       });
       return;
     }
-    addToCart(producto, talleSeleccionado, colorSeleccionado);
+
+    // APLICAMOS LA CORRECCIÓN AQUÍ:
+    // Creamos un nuevo objeto producto donde "pisamos" el precio original con el precioFinal
+    const productoParaCarrito = {
+      ...producto,
+      precio: precioFinal, // El carrito ahora usará el precio con el descuento aplicado
+      precioSinDescuento: precioOriginal, // Lo guardamos por si en el futuro quieres mostrar en el carrito cuánto se ahorró
+    };
+
+    addToCart(productoParaCarrito, talleSeleccionado, colorSeleccionado);
   };
 
   const stockActual = obtenerStockCombinado(
@@ -67,7 +84,15 @@ export default function CardProd({ producto }) {
   return (
     <div className="group w-full max-w-[320px] p-4 rounded-[2rem] font-sans mx-auto relative overflow-hidden z-0 border border-white/20 bg-white/10 shadow-lg backdrop-filter backdrop-blur-md flex flex-col h-full">
       <div className="relative z-10 flex flex-col h-full">
+        {/* IMAGEN Y CARTEL DE DESCUENTO */}
         <div className="w-full h-[240px] overflow-hidden rounded-[1.5rem] bg-black/40 mb-4 relative flex items-center justify-center shrink-0">
+          {/* ETIQUETA % OFF */}
+          {porcentajeDescuento > 0 && (
+            <div className="absolute top-3 left-3 bg-[#CAFC00] text-black font-strasua text-xs tracking-wider px-3 py-1 rounded-full z-20 shadow-[0_0_10px_rgba(202,252,0,0.5)]">
+              -{porcentajeDescuento}% OFF
+            </div>
+          )}
+
           <img
             src={producto.imagen}
             alt={producto.nombre}
@@ -75,13 +100,26 @@ export default function CardProd({ producto }) {
           />
         </div>
 
+        {/* TÍTULO Y PRECIO */}
         <div className="flex flex-col items-center justify-center text-center mb-5 px-1 gap-1">
           <h3 className="text-white font-octosquares text-base lg:text-lg font-black tracking-wider leading-tight">
             {producto.nombre}
           </h3>
-          <span className="text-[#CAFC00] font-octosquares text-lg lg:text-xl font-black shrink-0 mt-1">
-            ${producto.precio?.toLocaleString()}
-          </span>
+
+          {porcentajeDescuento > 0 ? (
+            <div className="flex items-center gap-3 mt-1">
+              <span className="text-white/40 font-octosquares text-sm lg:text-base line-through decoration-red-500/80 decoration-2">
+                ${precioOriginal.toLocaleString()}
+              </span>
+              <span className="text-[#CAFC00] font-octosquares text-lg lg:text-xl font-black shrink-0">
+                ${precioFinal.toLocaleString()}
+              </span>
+            </div>
+          ) : (
+            <span className="text-[#CAFC00] font-octosquares text-lg lg:text-xl font-black shrink-0 mt-1">
+              ${precioOriginal.toLocaleString()}
+            </span>
+          )}
         </div>
 
         <div className="flex flex-row items-center gap-3 mb-4 px-1">

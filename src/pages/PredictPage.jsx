@@ -14,6 +14,7 @@ export default function PredictPage() {
     email: "",
     whatsapp: "",
     ganador: "",
+    puntos: "",
   });
 
   const [timeLeft, setTimeLeft] = useState({
@@ -135,6 +136,9 @@ export default function PredictPage() {
           whatsapp: cleanWhatsapp,
           predicciones: {
             [config.juegoActivo]: formData.ganador,
+          },
+          desempates: {
+            [config.juegoActivo]: formData.puntos,
           },
           fechas_registro: {
             [config.juegoActivo]: new Date().toISOString(),
@@ -294,7 +298,6 @@ export default function PredictPage() {
               required
               type="tel"
               inputMode="numeric"
-              pattern="[0-9\s\-\+]+"
               placeholder="Ej: 3431234567"
               value={formData.whatsapp}
               onChange={(e) => {
@@ -313,8 +316,8 @@ export default function PredictPage() {
           <input
             required
             type="email"
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
             placeholder="tu@correo.com"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
             value={formData.email}
             readOnly={!!localStorage.getItem("swish_user_data")}
             className={`w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-white text-sm sm:text-base focus:outline-none focus:border-[#CAFC00] transition-all font-octosquares ${localStorage.getItem("swish_user_data") ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -344,8 +347,32 @@ export default function PredictPage() {
           </div>
         </div>
 
+        <div className="pt-5 sm:pt-6 border-t border-white/5 space-y-3 sm:space-y-4">
+          <p className="font-strasua text-lg sm:text-xl text-[#CAFC00] text-center italic uppercase mb-1 sm:mb-2">
+            DESEMPATE: PUNTOS TOTALES
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            {["+ 210", "- 210"].map((opcion) => (
+              <button
+                key={opcion}
+                type="button"
+                onClick={() => setForm({ ...formData, puntos: opcion })}
+                className={`p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 font-strasua tracking-tighter text-sm sm:text-base transition-all ${
+                  formData.puntos === opcion
+                    ? "border-[#CAFC00] bg-[#CAFC00] text-black scale-[1.02] sm:scale-105 shadow-[0_0_15px_rgba(202,252,0,0.3)]"
+                    : "border-white/10 bg-white/5 text-white hover:border-white/30"
+                }`}
+              >
+                {opcion}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <button
-          disabled={status === "loading" || !formData.ganador}
+          disabled={
+            status === "loading" || !formData.ganador || !formData.puntos
+          }
           type="submit"
           className="w-full bg-[#CAFC00] text-black font-strasua text-lg sm:text-xl mt-2 sm:mt-4 py-4 sm:py-5 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 sm:gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale disabled:hover:scale-100"
         >

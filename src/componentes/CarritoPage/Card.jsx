@@ -1,10 +1,23 @@
 import React from "react";
 
 const Card = ({ product, onQuantityChange, onRemoveProduct }) => {
-  const { id, nombre, precio, imagen, quantity, selectedColor, selectedSize } =
-    product;
+  const {
+    id,
+    nombre,
+    precio, // Este ya es el precio con el descuento aplicado
+    precioSinDescuento, // Este lo guardamos desde CardProd
+    imagen,
+    quantity,
+    selectedColor,
+    selectedSize,
+  } = product;
 
+  // Calculamos los totales según la cantidad
   const totalPrice = quantity * precio;
+  const totalOriginal = precioSinDescuento
+    ? quantity * precioSinDescuento
+    : null;
+  const tieneDescuento = precioSinDescuento && precioSinDescuento > precio;
 
   const getBgColor = (colorName) => {
     if (!colorName) return "bg-gray-500";
@@ -14,21 +27,39 @@ const Card = ({ product, onQuantityChange, onRemoveProduct }) => {
 
   return (
     <div className="p-3 sm:p-4 rounded-[1.5rem] flex flex-row gap-3 sm:gap-5 w-full border border-white/20 bg-white/5 hover:bg-white/10 transition-colors backdrop-filter backdrop-blur-md shadow-lg">
-      <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl overflow-hidden flex-shrink-0 bg-black/40">
+      {/* IMAGEN */}
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl overflow-hidden flex-shrink-0 bg-black/40">
         <img src={imagen} alt={nombre} className="w-full h-full object-cover" />
       </div>
 
+      {/* CONTENIDO */}
       <div className="flex flex-col justify-between flex-grow min-w-0 py-1">
+        {/* TÍTULO Y PRECIOS */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4 mb-2 sm:mb-0">
           <h3 className="text-base sm:text-lg md:text-xl font-octosquares font-black text-white tracking-wide leading-tight line-clamp-2">
             {nombre}
           </h3>
-          <div className="text-base sm:text-lg md:text-xl font-octosquares font-black text-[#CAFC00] tracking-wider shrink-0">
-            ${totalPrice.toLocaleString("es-AR")}
+
+          <div className="flex flex-col items-start sm:items-end shrink-0">
+            {tieneDescuento ? (
+              <>
+                <span className="text-xs sm:text-sm font-octosquares font-black text-white/40 line-through decoration-red-500/80 decoration-2">
+                  ${totalOriginal.toLocaleString("es-AR")}
+                </span>
+                <span className="text-base sm:text-lg md:text-xl font-octosquares font-black text-[#CAFC00] tracking-wider">
+                  ${totalPrice.toLocaleString("es-AR")}
+                </span>
+              </>
+            ) : (
+              <span className="text-base sm:text-lg md:text-xl font-octosquares font-black text-[#CAFC00] tracking-wider">
+                ${totalPrice.toLocaleString("es-AR")}
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mb-3 sm:mb-0">
+        {/* VARIANTE (COLOR / TALLE) */}
+        <div className="flex items-center gap-2 mb-3 sm:mb-0 mt-1 sm:mt-0">
           <div
             className={`w-4 h-4 rounded-full border border-white/30 ${getBgColor(selectedColor)}`}
           ></div>
@@ -37,6 +68,7 @@ const Card = ({ product, onQuantityChange, onRemoveProduct }) => {
           </span>
         </div>
 
+        {/* CONTROLES: CANTIDAD Y ELIMINAR */}
         <div className="flex items-center justify-between sm:justify-start gap-3 sm:gap-6 mt-auto">
           <div className="flex items-center rounded-xl px-1 sm:px-2 h-9 sm:h-10 border border-white/20 bg-black/50 backdrop-filter backdrop-blur-md">
             <button

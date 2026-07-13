@@ -94,6 +94,7 @@ const AdminPage = () => {
       tallesStr: prod.talles ? prod.talles.join(", ") : "",
       coloresStr: prod.colores ? prod.colores.join(", ") : "",
       stockDetallado: prod.stockDetallado || {},
+      descuento: prod.descuento || 0, // <-- CARGAMOS EL DESCUENTO
     });
     setMensajeForm("");
   };
@@ -150,6 +151,7 @@ const AdminPage = () => {
         talles: tallesArray,
         colores: coloresArray,
         stockDetallado: stockLimpio,
+        descuento: Number(productoEditando.descuento) || 0, // <-- GUARDAMOS EL DESCUENTO
       };
 
       await updateDoc(docRef, productoActualizado);
@@ -287,7 +289,6 @@ const AdminPage = () => {
     <div className="min-h-screen bg-black pt-24 pb-12 px-4 md:px-8">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row justify-between items-center mb-6 md:mb-8 border-b border-white/10 pb-4 md:pb-6 gap-4 md:gap-6">
-          {/* Título y Botón Salir (Visible en Móvil) */}
           <div className="flex justify-between items-center w-full lg:w-auto">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-strasua text-[#CAFC00]">
               Panel de Control
@@ -357,13 +358,21 @@ const AdminPage = () => {
                     alt=""
                     className="w-12 h-12 rounded-lg object-cover bg-black"
                   />
-                  <div className="text-left overflow-hidden">
-                    <p className="text-white font-bold truncate font-octosquares">
-                      {prod.nombre}
-                    </p>
-                    <p className="text-[#CAFC00] text-sm font-octosquares">
-                      ${prod.precio.toLocaleString()}
-                    </p>
+                  <div className="text-left overflow-hidden w-full flex justify-between items-center pr-2">
+                    <div>
+                      <p className="text-white font-bold truncate font-octosquares">
+                        {prod.nombre}
+                      </p>
+                      <p className="text-[#CAFC00] text-sm font-octosquares">
+                        ${prod.precio.toLocaleString()}
+                      </p>
+                    </div>
+                    {/* Indicador chiquito si el producto tiene descuento */}
+                    {prod.descuento > 0 && (
+                      <span className="bg-[#CAFC00] text-black text-[10px] font-bold px-2 py-0.5 rounded-md font-octosquares">
+                        -{prod.descuento}%
+                      </span>
+                    )}
                   </div>
                 </button>
               ))}
@@ -406,6 +415,22 @@ const AdminPage = () => {
                         onChange={handleChange}
                         className="w-full p-4 rounded-xl bg-white/5 border border-white/20 text-white focus:outline-none focus:border-[#CAFC00]"
                         required
+                      />
+                    </div>
+                    {/* NUEVO INPUT PARA EL DESCUENTO */}
+                    <div>
+                      <label className="text-[#CAFC00] text-sm mb-2 font-octosquares font-bold block">
+                        Descuento (%)
+                      </label>
+                      <input
+                        type="number"
+                        name="descuento"
+                        min="0"
+                        max="100"
+                        placeholder="Ej: 20"
+                        value={productoEditando.descuento || ""}
+                        onChange={handleChange}
+                        className="w-full p-4 rounded-xl bg-[#CAFC00]/10 border border-[#CAFC00]/30 text-white focus:outline-none focus:border-[#CAFC00] transition-colors"
                       />
                     </div>
                     <div className="col-span-1 md:col-span-2">
@@ -510,6 +535,7 @@ const AdminPage = () => {
           </div>
         )}
 
+        {/* CONTENIDO NBA ... */}
         {activeTab === "nba" && (
           <div className="bg-[#111111] border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-2xl max-w-4xl mx-auto animate-fade-in">
             <h2 className="text-2xl font-strasua text-white mb-8 border-b border-white/10 pb-4">
@@ -636,6 +662,7 @@ const AdminPage = () => {
           </div>
         )}
 
+        {/* CONTENIDO RESULTADOS ... */}
         {activeTab === "resultados" && (
           <div className="animate-fade-in space-y-6">
             <div className="bg-[#111111] border border-white/10 rounded-[2rem] p-8 flex flex-col md:flex-row gap-6 items-end justify-between font-octosquares">
